@@ -20,5 +20,10 @@
   "workspaces": [
     "apps/*",
     "packages/*"
-  ]
+  ],
+  "dependencies": {
+    "@emotion/styled": "^11.11.0",
+    "@pixi/layers": "^2.1.0",
+    "mobx-react": "^9.1.0"
+  }
 }
