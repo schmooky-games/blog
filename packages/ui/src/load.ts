@@ -8,18 +8,27 @@ interface ISpineKeys {
   skeletonName: string;
   atlasName: string;
 }
+interface IAtlasKeys {
+  atlas: string;
+  gamePath: string;
+}
 
 export interface IAssetsKeys {
   fonts: Array<string>;
+  gamePath: string;
+  prefix: string;
   bitMapFonts: Array<string>;
   spines: Array<ISpineKeys>;
-  atlases: Array<string>;
+  atlases: Array<IAtlasKeys>;
 }
 
-const HOST_PATH = "http://assets.schmooky.dev/winspinity/moonlight-burst";
+const HOST_PATH = "http://assets.schmooky.dev/";
 
-export const loadAtlas = (atlasName: string): Promise<void> => {
-  Assets.add(atlasName, `/${HOST_PATH}/${atlasName}.json`);
+export const loadAtlas = (
+  atlasName: string,
+  gamePath: string
+): Promise<void> => {
+  Assets.add(atlasName, `/${HOST_PATH + gamePath}/${atlasName}.json`);
   return Assets.load(atlasName);
 };
 
@@ -27,12 +36,13 @@ export const loadSpineAsset = (
   spineName: string,
   path: string,
   skeletonName: string,
-  atlasName: string
+  atlasName: string,
+  gamePath: string
 ): Promise<void> => {
-  const skeletonPath = `${HOST_PATH}/spine/${path}/${skeletonName}.json`;
+  const skeletonPath = `${HOST_PATH + gamePath}/spine/${path}/${skeletonName}.json`;
 
   const spineMetadata: ISpineMetadata = {
-    spineAtlasFile: `${HOST_PATH}/spine/${path}/${atlasName}.atlas`,
+    spineAtlasFile: `${HOST_PATH + gamePath}/spine/${path}/${atlasName}.atlas`,
   };
 
   const skeleton = Assets.load<void>({
@@ -63,14 +73,20 @@ export const generateAssetPromises = (
     assetsKeys.spines.forEach(
       ({ spineName, path, skeletonName, atlasName }) => {
         promisesAssets.push(
-          loadSpineAsset(spineName, path, skeletonName, atlasName)
+          loadSpineAsset(
+            spineName,
+            path,
+            skeletonName,
+            atlasName,
+            assetsKeys.gamePath
+          )
         );
       }
     );
   }
   if (assetsKeys.atlases.length) {
-    assetsKeys.atlases.forEach((atlas) => {
-      promisesAssets.push(loadAtlas(atlas));
+    assetsKeys.atlases.forEach(({ atlas, gamePath }) => {
+      promisesAssets.push(loadAtlas(atlas, gamePath));
     });
   }
   return promisesAssets;
@@ -95,7 +111,9 @@ export const loadAssets = (
 
 export interface IAssetsKeys {
   fonts: Array<string>;
+  gamePath: string;
+  prefix: string;
   bitMapFonts: Array<string>;
   spines: Array<ISpineKeys>;
-  atlases: Array<string>;
+  atlases: Array<IAtlasKeys>;
 }

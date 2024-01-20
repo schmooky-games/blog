@@ -1,10 +1,31 @@
 import * as React from "react";
 import * as PIXI from "pixi.js";
 import { loadAssets, generateAssetPromises, IAssetsKeys } from "../load";
-import { Spine } from "pixi-spine";
+import {
+  IAnimation,
+  IBoneData,
+  IEventData,
+  IIkConstraintData,
+  IPathConstraintData,
+  ISkeletonData,
+  ISkin,
+  ISlotData,
+  ITimeline,
+  ITransformConstraintData,
+  Spine,
+} from "pixi-spine";
+import {
+  StageWrapper,
+  StageInner,
+  StageText,
+  AnimationsCase,
+  AnimationCase,
+} from "../CuteStage";
 
-export const initialAssetsLoaderKeys: IAssetsKeys = {
+export const MoonLightBurstKeyLoaders: IAssetsKeys = {
   fonts: [],
+  gamePath: "winspinity/moonlight-burst",
+  prefix: "winspinity-moonlight-burst-",
   bitMapFonts: [],
   spines: [
     {
@@ -17,14 +38,25 @@ export const initialAssetsLoaderKeys: IAssetsKeys = {
   atlases: [],
 };
 
+class UploadSpine extends Spine {
+  constructor(spineName: string) {
+    if (PIXI.Assets.cache.get(spineName))
+      super(PIXI.Assets.cache.get(spineName));
+    else {
+      console.error("Provided name does not exist in cache");
+    }
+  }
+}
+
 const promises: Array<Promise<void>> = generateAssetPromises(
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  initialAssetsLoaderKeys
+  MoonLightBurstKeyLoaders
 );
 
 export const Stage = () => {
   console.log("Canvas updated");
   const canvasRef = React.useRef();
+  const [animationNames, setAnimationNames] = React.useState<string[]>([]);
   React.useEffect(() => {
     console.log("Canvas mounted");
     const app = new PIXI.Application({
@@ -36,17 +68,27 @@ export const Stage = () => {
       sharedTicker: true,
     });
     loadAssets(promises).then(() => {
-      console.log(PIXI.Assets.cache);
-      const spine = new Spine(PIXI.Assets.cache.get("seven"));
+      console.log(PIXI.Assets);
+      const spine = new UploadSpine("seven");
+      setAnimationNames(spine.spineData.animations.map((foo) => foo.name));
       spine.x = 200;
       spine.y = 150;
       app.stage.addChild(spine);
       spine.state.setAnimation(0, "action", true);
     });
   }, [canvasRef.current]);
+
   return (
-    <div>
-      <canvas ref={canvasRef} style={{ borderRadius: 16 }}></canvas>
-    </div>
+    <StageWrapper>
+      <StageText>Seven</StageText>
+      <StageInner>
+        <AnimationsCase>
+          {animationNames.map((foo) => (
+            <AnimationCase>{foo}</AnimationCase>
+          ))}
+        </AnimationsCase>
+        <canvas ref={canvasRef}></canvas>
+      </StageInner>
+    </StageWrapper>
   );
 };
