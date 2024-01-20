@@ -1,19 +1,7 @@
 import * as React from "react";
 import * as PIXI from "pixi.js";
 import { loadAssets, generateAssetPromises, IAssetsKeys } from "../load";
-import {
-  IAnimation,
-  IBoneData,
-  IEventData,
-  IIkConstraintData,
-  IPathConstraintData,
-  ISkeletonData,
-  ISkin,
-  ISlotData,
-  ITimeline,
-  ITransformConstraintData,
-  Spine,
-} from "pixi-spine";
+import { Spine } from "pixi-spine";
 import {
   StageWrapper,
   StageInner,
@@ -69,7 +57,7 @@ export const Stage = () => {
     });
     loadAssets(promises).then(() => {
       console.log(PIXI.Assets);
-      const spine = new UploadSpine("seven");
+      const spine = new UploadSpine("winspinity-moonlight-burst-seven");
       setAnimationNames(spine.spineData.animations.map((foo) => foo.name));
       spine.x = 200;
       spine.y = 150;

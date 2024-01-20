@@ -74,7 +74,7 @@ export const generateAssetPromises = (
       ({ spineName, path, skeletonName, atlasName }) => {
         promisesAssets.push(
           loadSpineAsset(
-            spineName,
+            assetsKeys.prefix + spineName,
             path,
             skeletonName,
             atlasName,
