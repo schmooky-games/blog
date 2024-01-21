@@ -1,13 +1,14 @@
 import * as React from "react";
 import * as PIXI from "pixi.js";
 import { loadAssets, generateAssetPromises, IAssetsKeys } from "../load";
-import { Spine } from "pixi-spine";
+import { IAnimation, Spine } from "pixi-spine";
 import {
   StageWrapper,
   StageInner,
   StageText,
   AnimationsCase,
   AnimationCase,
+  ZoomCase,
 } from "../CuteStage";
 
 export const MoonLightBurstKeyLoaders: IAssetsKeys = {
@@ -34,6 +35,27 @@ class UploadSpine extends Spine {
       console.error("Provided name does not exist in cache");
     }
   }
+  get animationNames(): string[] {
+    return this.spineData.animations.map((foo) => foo.name);
+  }
+}
+
+interface IExtendedAppOptions extends PIXI.IApplicationOptions {
+  zoom: number;
+}
+
+class ExtendedApp extends PIXI.Application {
+  set zoom(value: number) {
+    this.stage.scale.set(1 / Math.min(10, Math.max(0.1, +value.toFixed(2))));
+  }
+  get zoom(): number {
+    return 1 / this.stage.scale.x;
+  }
+  constructor(options?: Partial<IExtendedAppOptions>) {
+    super(options);
+    this.stage.x = this.renderer.view.width / 2;
+    this.stage.y = this.renderer.view.height / 2;
+  }
 }
 
 const promises: Array<Promise<void>> = generateAssetPromises(
@@ -44,25 +66,51 @@ const promises: Array<Promise<void>> = generateAssetPromises(
 export const Stage = () => {
   console.log("Canvas updated");
   const canvasRef = React.useRef();
-  const [animationNames, setAnimationNames] = React.useState<string[]>([]);
+  const [currentAnimation, setCurrentAnimation] = React.useState<IAnimation>();
+  const [spineObj, setSpineObj] = React.useState<UploadSpine>();
+  const [zoom, setZoom] = React.useState<number>(1);
   React.useEffect(() => {
     console.log("Canvas mounted");
-    const app = new PIXI.Application({
+    const app = new ExtendedApp({
       backgroundColor: 0x140f24, // нужно - совпадает с фоном элемента
       resolution: 1, // нужно
       view: canvasRef.current,
       width: 400,
       height: 300,
       sharedTicker: true,
+      zoom: 1,
     });
     loadAssets(promises).then(() => {
       console.log(PIXI.Assets);
       const spine = new UploadSpine("winspinity-moonlight-burst-seven");
-      setAnimationNames(spine.spineData.animations.map((foo) => foo.name));
-      spine.x = 200;
-      spine.y = 150;
+      setSpineObj(spine);
+      app.stage.interactive = true;
       app.stage.addChild(spine);
-      spine.state.setAnimation(0, "action", true);
+      //@ts-ignore
+      app.view.addEventListener(
+        "wheel",
+        (e: WheelEvent) => {
+          e.preventDefault();
+          app.zoom = app.zoom - 0.1 * Math.sign(e.deltaY * -1);
+          setZoom(app.zoom);
+        },
+        { passive: false }
+      );
+      spine.state.addListener({
+        start(entry) {
+          console.log("Anim started");
+          //@ts-ignore
+          setCurrentAnimation(entry.animation);
+        },
+        interrupt(entry) {},
+        end(entry) {},
+        dispose(entry) {},
+        complete(entry) {
+          console.log("Anim Ended");
+          setCurrentAnimation(undefined);
+        },
+        event(entry, event) {},
+      });
     });
   }, [canvasRef.current]);
 
@@ -71,12 +119,21 @@ export const Stage = () => {
       <StageText>Seven</StageText>
       <StageInner>
         <AnimationsCase>
-          {animationNames.map((foo) => (
-            <AnimationCase>{foo}</AnimationCase>
-          ))}
+          {spineObj &&
+            spineObj.animationNames.map((foo, i) => (
+              <AnimationCase
+                onClick={() => spineObj.state.setAnimation(0, foo, false)}
+                key={i}
+                animPlayed={currentAnimation && currentAnimation.name == foo}
+              >
+                {foo}
+              </AnimationCase>
+            ))}
         </AnimationsCase>
+        {/*@ts-ignore */}
         <canvas ref={canvasRef}></canvas>
       </StageInner>
+      <ZoomCase>Scale: {Math.round(zoom * 10) / 10}</ZoomCase>
     </StageWrapper>
   );
 };

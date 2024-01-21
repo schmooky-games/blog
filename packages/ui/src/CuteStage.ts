@@ -27,10 +27,19 @@ export const AnimationsCase = styled.div`
   flex-flow: column;
   background-color: #433f50;
 `;
-export const AnimationCase = styled.button`
-  background-color: #433f50;
+export const AnimationCase = styled.button<{ animPlayed?: boolean }>`
+  color: #d9d9d9;
+  background-color: ${(props) => (props.animPlayed ? "red" : "#433f50")};
   transition: color 1s;
+  margin: 5px;
+  margin-bottom: 0px;
   :hover {
-    background-color: #87848f;
+    background-color: ${(props) => (props.animPlayed ? "red" : "#87848f")};
   }
+`;
+export const ZoomCase = styled.div`
+  position: relative;
+  left: 200px;
+  bottom: 30px;
+  color: white;
 `;
