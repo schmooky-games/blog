@@ -9,6 +9,7 @@ import react from "@astrojs/react";
 // https://astro.build/config
 export default defineConfig({
   site: "https://in-slots.schmooky.dev",
+  target: 'server',
   integrations: [
     mdx({
       syntaxHighlight: "shiki",
@@ -21,4 +22,11 @@ export default defineConfig({
     sitemap(),
     react(),
   ],
+  vite: {
+    ssr: {
+      // Example: Force a broken package to skip SSR processing, if needed
+      external: ['@pixi/settings',"@pixi/utils"],
+      target: 'webworker'
+    }
+  }
 });
