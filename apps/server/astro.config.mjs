@@ -9,7 +9,7 @@ import react from "@astrojs/react";
 // https://astro.build/config
 export default defineConfig({
   site: "https://in-slots.schmooky.dev",
-  target: 'server',
+  target: 'static',
   integrations: [
     mdx({
       syntaxHighlight: "shiki",

@@ -22,7 +22,7 @@ export interface IAssetsKeys {
   atlases: Array<IAtlasKeys>;
 }
 
-const HOST_PATH = "http://assets.schmooky.dev/";
+const HOST_PATH = "https://assets.schmooky.dev/";
 
 export const loadAtlas = (
   atlasName: string,

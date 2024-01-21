@@ -1,6 +1,7 @@
+"use client"
 import * as React from "react";
 import * as PIXI from "pixi.js";
-import { loadAssets, generateAssetPromises, IAssetsKeys } from "../load";
+import { loadAssets, generateAssetPromises, IAssetsKeys } from "./load";
 import { IAnimation, Spine } from "pixi-spine";
 import {
   StageWrapper,
@@ -9,7 +10,7 @@ import {
   AnimationsCase,
   AnimationCase,
   ZoomCase,
-} from "../CuteStage";
+} from "./CuteStage";
 
 export const MoonLightBurstKeyLoaders: IAssetsKeys = {
   fonts: [],
@@ -64,6 +65,7 @@ const promises: Array<Promise<void>> = generateAssetPromises(
 );
 
 export const Stage = () => {
+  // if(typeof global.undefined === undefined) return null
   console.log("Canvas updated");
   const canvasRef = React.useRef();
   const [currentAnimation, setCurrentAnimation] = React.useState<IAnimation>();
