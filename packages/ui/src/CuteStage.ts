@@ -22,11 +22,13 @@ export const StageInner = styled.div`
   border-radius: 8px;
   user-select: none;
   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+  max-height: 400px;
 `;
 export const AnimationsCase = styled.div`
   display: flex;
   flex-flow: column;
   background-color: #433f50;
+  overflow-y: scroll;
 `;
 export const AnimationCase = styled.button<{ animPlayed?: boolean }>`
   color: #d9d9d9;

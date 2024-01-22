@@ -11,36 +11,34 @@ import {
   AnimationCase,
   ZoomCase,
 } from "./CuteStage";
-
+import { UploadSpine } from "./uploadSpine";
 export const MoonLightBurstKeyLoaders: IAssetsKeys = {
   fonts: [],
-  gamePath: "winspinity/moonlight-burst",
-  prefix: "winspinity-moonlight-burst-",
+  gamePath: "thunderkick/grand-melee",
+  prefix: "thunderkick-grand-melee-",
   bitMapFonts: [],
   spines: [
     {
-      spineName: "seven",
-      path: "seven",
-      skeletonName: "seven",
-      atlasName: "seven",
+      spineName: "high",
+      path: "symbols",
+      skeletonName: "high",
+      atlasName: "symbols",
+    },
+    {
+      spineName: "symbolEffects",
+      path: "symbols",
+      skeletonName: "symbolEffects",
+      atlasName: "symbols",
+    },
+    {
+      spineName: "lows",
+      path: "symbols",
+      skeletonName: "lows",
+      atlasName: "symbols",
     },
   ],
   atlases: [],
 };
-
-class UploadSpine extends Spine {
-  constructor(spineName: string) {
-    if (PIXI.Assets.cache.get(spineName))
-      super(PIXI.Assets.cache.get(spineName));
-    else {
-      console.error("Provided name does not exist in cache");
-    }
-  }
-  get animationNames(): string[] {
-    return this.spineData.animations.map((foo) => foo.name);
-  }
-}
-
 interface IExtendedAppOptions extends PIXI.IApplicationOptions {
   zoom: number;
 }
@@ -59,18 +57,26 @@ class ExtendedApp extends PIXI.Application {
   }
 }
 
+export type Newable<T> = { new (...args: any[]): T };
+
+interface IStageProps {
+  previewElementClass: Newable<UploadSpine>;
+}
+
 const promises: Array<Promise<void>> = generateAssetPromises(
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   MoonLightBurstKeyLoaders
 );
 
-export const Stage = () => {
+export const Stage: React.FC<IStageProps> = (props) => {
   // if(typeof global.undefined === undefined) return null
   console.log("Canvas updated");
   const canvasRef = React.useRef();
+
   const [currentAnimation, setCurrentAnimation] = React.useState<IAnimation>();
   const [spineObj, setSpineObj] = React.useState<UploadSpine>();
   const [zoom, setZoom] = React.useState<number>(1);
+
   React.useEffect(() => {
     console.log("Canvas mounted");
     const app = new ExtendedApp({
@@ -84,7 +90,7 @@ export const Stage = () => {
     });
     loadAssets(promises).then(() => {
       console.log(PIXI.Assets);
-      const spine = new UploadSpine("winspinity-moonlight-burst-seven");
+      const spine = new props.previewElementClass();
       setSpineObj(spine);
       app.stage.interactive = true;
       app.stage.addChild(spine);
@@ -118,7 +124,7 @@ export const Stage = () => {
 
   return (
     <StageWrapper>
-      <StageText>Seven</StageText>
+      <StageText>Spine</StageText>
       <StageInner>
         <ZoomCase>Scale: {Math.round(zoom * 10) / 10}</ZoomCase>
         {/*@ts-ignore */}

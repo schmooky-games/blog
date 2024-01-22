@@ -1,4 +1,12 @@
 ---
 import { Stage } from "@repo/ui";
+import { UploadSpine } from "@repo/ui/src/uploadSpine";
+
+export class SymbolEffectsSpine extends UploadSpine {
+  constructor() {
+    super("thunderkick-grand-melee-symbolEffects");
+  }
+}
 ---
-<Stage client:only="react" />
+
+<Stage client:only="react" previewElementClass={SymbolEffectsSpine} />
