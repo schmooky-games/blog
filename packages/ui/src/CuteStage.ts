@@ -13,6 +13,7 @@ export const StageText = styled.p`
 `;
 
 export const StageInner = styled.div`
+  position: relative;
   border: solid 1px rgba(69, 60, 52, 0.5);
   margin: 16;
   display: flex;
@@ -38,8 +39,9 @@ export const AnimationCase = styled.button<{ animPlayed?: boolean }>`
   }
 `;
 export const ZoomCase = styled.div`
-  position: relative;
-  left: 200px;
-  bottom: 30px;
+  font-size: 20px;
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
   color: white;
 `;

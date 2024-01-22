@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import * as React from "react";
 import * as PIXI from "pixi.js";
 import { loadAssets, generateAssetPromises, IAssetsKeys } from "./load";
@@ -120,6 +120,9 @@ export const Stage = () => {
     <StageWrapper>
       <StageText>Seven</StageText>
       <StageInner>
+        <ZoomCase>Scale: {Math.round(zoom * 10) / 10}</ZoomCase>
+        {/*@ts-ignore */}
+        <canvas ref={canvasRef}></canvas>
         <AnimationsCase>
           {spineObj &&
             spineObj.animationNames.map((foo, i) => (
@@ -132,10 +135,7 @@ export const Stage = () => {
               </AnimationCase>
             ))}
         </AnimationsCase>
-        {/*@ts-ignore */}
-        <canvas ref={canvasRef}></canvas>
       </StageInner>
-      <ZoomCase>Scale: {Math.round(zoom * 10) / 10}</ZoomCase>
     </StageWrapper>
   );
 };
