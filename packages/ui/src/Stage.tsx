@@ -57,16 +57,13 @@ class ExtendedApp extends PIXI.Application {
   }
 }
 
-export type Newable<T> = { new (...args: any[]): T };
+export type Newable<T> = { new(...args: any[]): T };
 
 interface IStageProps {
   previewElementClass: Newable<UploadSpine>;
+  assetPromisesFactory: () => Promise<void>[]
 }
 
-const promises: Array<Promise<void>> = generateAssetPromises(
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  MoonLightBurstKeyLoaders
-);
 
 export const Stage: React.FC<IStageProps> = (props) => {
   // if(typeof global.undefined === undefined) return null
@@ -78,7 +75,8 @@ export const Stage: React.FC<IStageProps> = (props) => {
   const [zoom, setZoom] = React.useState<number>(1);
 
   React.useEffect(() => {
-    console.log("Canvas mounted");
+
+    console.log("Canvas mounted", props);
     const app = new ExtendedApp({
       backgroundColor: 0x140f24, // нужно - совпадает с фоном элемента
       resolution: 1, // нужно
@@ -88,7 +86,7 @@ export const Stage: React.FC<IStageProps> = (props) => {
       sharedTicker: true,
       zoom: 1,
     });
-    loadAssets(promises).then(() => {
+    loadAssets(props.assetPromisesFactory()).then(() => {
       console.log(PIXI.Assets);
       const spine = new props.previewElementClass();
       setSpineObj(spine);
@@ -110,17 +108,17 @@ export const Stage: React.FC<IStageProps> = (props) => {
           //@ts-ignore
           setCurrentAnimation(entry.animation);
         },
-        interrupt(entry) {},
-        end(entry) {},
-        dispose(entry) {},
+        interrupt(entry) { },
+        end(entry) { },
+        dispose(entry) { },
         complete(entry) {
           console.log("Anim Ended");
           setCurrentAnimation(undefined);
         },
-        event(entry, event) {},
+        event(entry, event) { },
       });
     });
-  }, [canvasRef.current]);
+  }, [canvasRef.current, props.previewElementClass]);
 
   return (
     <StageWrapper>
