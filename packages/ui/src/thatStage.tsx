@@ -1,7 +1,7 @@
 import { generateAssetPromises, Stage } from "@repo/ui";
 import type { IAssetsKeys } from "@repo/ui";
-import { ExtendedSpine } from "@repo/ui/src/extendedSpine";
-import Lows from "@repo/ui/src/lows";
+import { ExtendedSpine } from "./extendedSpine.pixi";
+import Lows from "./lows";
 export const MoonLightBurstKeyLoaders: IAssetsKeys = {
   fonts: [],
   gamePath: "thunderkick/grand-melee",

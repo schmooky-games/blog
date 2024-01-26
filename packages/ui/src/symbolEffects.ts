@@ -1,6 +1,6 @@
-import { UploadSpine } from "./uploadSpine";
+import { ExtendedSpine } from "./extendedSpine.pixi";
 
-export default class SymbolEffectsSpine extends UploadSpine {
+export default class SymbolEffectsSpine extends ExtendedSpine {
   constructor() {
     super("thunderkick-grand-melee-symbolEffects");
   }
