@@ -4,16 +4,14 @@ import type {
   Timeline,
 } from "@pixi-spine/all-4.1";
 import { AttachmentTimeline } from "@pixi-spine/all-4.1";
-import * as PIXISpine from "@pixi-spine/all-4.1"
+import * as PIXISpine from "@pixi-spine/all-4.1";
 import { Assets } from "@pixi/assets";
 import type * as PIXI from "pixi.js";
-
-type Nullable<T> = T | null;
+import { Nullable } from "./types";
 
 interface AutomationContainer extends PIXI.Container {
   automationID?: string;
 }
-
 
 export class Spine extends PIXISpine.Spine {
   protected externalListener: Nullable<AnimationStateListener> = null;
@@ -50,7 +48,6 @@ export class Spine extends PIXISpine.Spine {
     const index = this.skeleton.data.findSlotIndex(slotName);
     return this.slotContainers[index]!;
   }
-
 
   getBoneContainer(boneName: string): PIXI.Container {
     const index = this.skeleton.data.findBoneIndex(boneName);

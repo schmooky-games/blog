@@ -33,11 +33,14 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "@repo/assets": "*",
-    "@repo/spine": "*",
     "@pixi-spine/all-4.1": "^4.0.4",
     "@pixi-spine/loader-base": "^4.0.4",
     "@pixi/react": "^7.1.1",
+    "@repo/assets": "*",
+    "@repo/spine": "*",
+    "@repo/store": "*",
+    "mobx": "^6.12.0",
+    "mobx-react-lite": "^4.0.5",
     "pixi-spine": "^4.0.4",
     "pixi.js": "^7.3.3"
   }

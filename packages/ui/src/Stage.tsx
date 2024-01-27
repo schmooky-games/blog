@@ -2,7 +2,7 @@
 import * as React from "react";
 import * as PIXI from "pixi.js";
 import { loadAssets, generateAssetPromises, IAssetsKeys } from "./load";
-import { IAnimation, Spine } from "pixi-spine";
+import { IAnimation } from "pixi-spine";
 import {
   StageWrapper,
   StageInner,
@@ -10,8 +10,7 @@ import {
   AnimationsCase,
   AnimationCase,
   ZoomCase,
-} from "./CuteStage";
-import { ExtendedSpine } from "./extendedSpine.pixi";
+} from "@repo/stage/src/styles";
 import { Graphics } from "@pixi/react";
 //@ts-ignore
 window.__PIXI_INSPECTOR_GLOBAL_HOOK__ &&
@@ -66,8 +65,8 @@ class ExtendedApp extends PIXI.Application {
 export type Newable<T> = { new (...args: any[]): T };
 
 interface IStageProps {
-  previewElementClass: Newable<ExtendedSpine>;
-  assetPromisesFactory: () => Promise<void>[];
+  previewElementClass?: Newable<Spine>;
+  assetPromisesFactory?: () => Promise<void>[];
 }
 
 const debugElements: Record<string, PIXI.DisplayObject> = {
@@ -86,7 +85,7 @@ export const Stage: React.FC<IStageProps> = (props) => {
   const canvasRef = React.useRef();
 
   const [currentAnimation, setCurrentAnimation] = React.useState<IAnimation>();
-  const [spineObj, setSpineObj] = React.useState<ExtendedSpine>();
+  const [spineObj, setSpineObj] = React.useState<Spine>();
   const [zoom, setZoom] = React.useState<number>(1);
 
   React.useEffect(() => {
@@ -102,48 +101,52 @@ export const Stage: React.FC<IStageProps> = (props) => {
     });
     //@ts-ignore
     globalThis.__PIXI_APP__ = app;
-    loadAssets(props.assetPromisesFactory()).then(() => {
-      console.log(PIXI.Assets);
-      const spine = new props.previewElementClass();
-      setSpineObj(spine);
-      app.stage.interactive = true;
-      //spine.removeFromSlot("stickyFrame");
-      app.stage.addChild(spine);
-      Object.keys(debugElements).forEach((key) => {
-        if (debugElements[key] && debugElements[key] !== undefined) {
-          spine.appendToSlot("back", debugElements[key]!);
-        }
+    if (
+      props.assetPromisesFactory !== undefined ||
+      props.previewElementClass !== undefined
+    ) {
+      loadAssets(props.assetPromisesFactory!()).then(() => {
+        console.log(PIXI.Assets);
+        const spine = new props.previewElementClass!();
+        setSpineObj(spine);
+        app.stage.interactive = true;
+        app.stage.addChild(spine);
+        Object.keys(debugElements).forEach((key) => {
+          if (debugElements[key] && debugElements[key] !== undefined) {
+            spine.appendToSlot("back", debugElements[key]!);
+          }
+        });
+        spine.skeleton.setSkinByName("low1");
+        spine.getBoneContainer("symbolHolder").visible = true;
+
+        console.log(spine.getBoneContainer("symbol"));
+        //@ts-ignore
+        app.view.addEventListener(
+          "wheel",
+          (e: WheelEvent) => {
+            e.preventDefault();
+            app.zoom = app.zoom - 0.1 * Math.sign(e.deltaY * -1);
+            setZoom(app.zoom);
+          },
+          { passive: false }
+        );
+        spine.state.addListener({
+          start(entry) {
+            console.log("Anim started");
+            //@ts-ignore
+            setCurrentAnimation(entry.animation);
+          },
+          interrupt(entry) {},
+          end(entry) {},
+          dispose(entry) {},
+          complete(entry) {
+            console.log("Anim Ended");
+            setCurrentAnimation(undefined);
+          },
+          event(entry, event) {},
+        });
       });
-      spine.skeleton.setSkinByName("low1");
-      spine.getBoneContainer("symbolHolder").visible = true;
-      console.log(spine.getBoneContainer("symbol"));
-      // spine.state.addAnimation(0, "enable", false);
-      //@ts-ignore
-      app.view.addEventListener(
-        "wheel",
-        (e: WheelEvent) => {
-          e.preventDefault();
-          app.zoom = app.zoom - 0.1 * Math.sign(e.deltaY * -1);
-          setZoom(app.zoom);
-        },
-        { passive: false }
-      );
-      spine.state.addListener({
-        start(entry) {
-          console.log("Anim started");
-          //@ts-ignore
-          setCurrentAnimation(entry.animation);
-        },
-        interrupt(entry) {},
-        end(entry) {},
-        dispose(entry) {},
-        complete(entry) {
-          console.log("Anim Ended");
-          setCurrentAnimation(undefined);
-        },
-        event(entry, event) {},
-      });
-    });
+    }
   }, [canvasRef.current, props.previewElementClass]);
 
   return (

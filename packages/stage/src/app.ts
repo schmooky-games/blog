@@ -1,3 +1,4 @@
+import { AppStore } from "./appStore";
 import * as PIXI from "pixi.js";
 
 export interface IExtendedAppOptions extends PIXI.IApplicationOptions {
@@ -31,6 +32,7 @@ export class ExtendedApp extends PIXI.Application {
     return 1 / this.stage.scale.x;
   }
 
+  appStore: AppStore = new AppStore();
   /**
    * Создает экземпляр ExtendedApp.
    *

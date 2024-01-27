@@ -1,15 +1,7 @@
-import { IAssetsKeys, generateAssetPromises } from "@repo/assets";
-import { Spine } from "@repo/spine";
-import { Stage } from "../stage";
+import { IAssetsKeys } from "@repo/assets";
+import { generateAssetPromises } from "@repo/assets";
 
-export default class Lows extends Spine {
-  constructor() {
-    super("thunderkick-grand-melee-lows");
-  }
-}
-
-
-export const MoonLightBurstKeyLoaders: IAssetsKeys = {
+export const grandMeleeKeyLoaders: IAssetsKeys = {
   fonts: [],
   gamePath: "thunderkick/grand-melee",
   prefix: "thunderkick-grand-melee-",
@@ -37,12 +29,8 @@ export const MoonLightBurstKeyLoaders: IAssetsKeys = {
   atlases: [],
 };
 
-const factory = () =>
+export const grandMeleeFactory = () =>
   generateAssetPromises(
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    MoonLightBurstKeyLoaders
+    grandMeleeKeyLoaders
   );
-
-export const ThatStage = () => {
-  return <Stage onLoad={async ()=>{return console.log('aaa')}} assetPromisesFactory={factory} />;
-};
