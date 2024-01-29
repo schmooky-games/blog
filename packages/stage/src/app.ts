@@ -1,3 +1,4 @@
+import React from "react";
 import { AppStore } from "./appStore";
 import * as PIXI from "pixi.js";
 
@@ -32,7 +33,7 @@ export class ExtendedApp extends PIXI.Application {
     return 1 / this.stage.scale.x;
   }
 
-  appStore: AppStore = new AppStore();
+  appStore: AppStore;
   /**
    * Создает экземпляр ExtendedApp.
    *
@@ -42,5 +43,9 @@ export class ExtendedApp extends PIXI.Application {
     super(options);
     this.stage.x = this.renderer.view.width / 2;
     this.stage.y = this.renderer.view.height / 2;
+    this.appStore = new AppStore();
   }
 }
+export const AppContext = React.createContext<{ app: ExtendedApp } | null>(
+  null
+);

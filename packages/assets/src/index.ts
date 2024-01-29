@@ -32,7 +32,7 @@ export const loadAtlas = (
   return Assets.load(atlasName);
 };
 
-export const loadSpineAsset = (
+export const loadSpineAsset = async (
   spineName: string,
   path: string,
   skeletonName: string,
@@ -40,24 +40,25 @@ export const loadSpineAsset = (
   gamePath: string
 ): Promise<void> => {
   const skeletonPath = `${HOST_PATH + gamePath}/spine/${path}/${skeletonName}.json`;
+  try {
+    const spineMetadata: ISpineMetadata = {
+      spineAtlasFile: `${HOST_PATH + gamePath}/spine/${path}/${atlasName}.atlas`,
+    };
 
-  const spineMetadata: ISpineMetadata = {
-    spineAtlasFile: `${HOST_PATH + gamePath}/spine/${path}/${atlasName}.atlas`,
-  };
+    const skeleton = await Assets.load<void>({
+      src: skeletonPath,
+      data: spineMetadata,
+    });
 
-  const skeleton = Assets.load<void>({
-    src: skeletonPath,
-    data: spineMetadata,
-  });
-
-  skeleton.then(() => {
     const skeletonJsonData = Assets.cache.get<any>(skeletonPath);
     const skeletonData = skeletonJsonData.spineData;
     Assets.cache.set(spineName, skeletonData);
     Assets.unload(skeletonPath);
-  });
 
-  return skeleton;
+    return skeleton;
+  } catch {
+    throw new Error(`Faild to load spine ${spineName} from ${skeletonPath}`);
+  }
 };
 
 export const generateAssetPromises = (

@@ -1,4 +1,3 @@
-export { GrandMAnimPreviewStage } from "./grand-melee/GrandMAnimPreviewStage";
 export {
   grandMeleeFactory,
   grandMeleeKeyLoaders,

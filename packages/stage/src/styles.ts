@@ -1,10 +1,9 @@
 import styled from "@emotion/styled";
 
 export const StageWrapper = styled.div`
-  display: flex;
-  flex-flow: column;
-  justify-items: center;
-  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 16px;
 `;
 
 export const StageText = styled.p`
@@ -23,24 +22,7 @@ export const StageInner = styled.div`
   user-select: none;
   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
   max-height: 400px;
-`;
-
-export const AnimationsCase = styled.div`
-  display: flex;
-  flex-flow: column;
-  background-color: #433f50;
-  overflow-y: scroll;
-`;
-
-export const AnimationCase = styled.button<{ animPlayed?: boolean }>`
-  color: #d9d9d9;
-  background-color: ${(props) => (props.animPlayed ? "red" : "#433f50")};
-  transition: color 1s;
-  margin: 5px;
-  margin-bottom: 0px;
-  :hover {
-    background-color: ${(props) => (props.animPlayed ? "red" : "#87848f")};
-  }
+  grid-column-start: 2;
 `;
 
 export const ZoomCase = styled.div`
@@ -49,4 +31,16 @@ export const ZoomCase = styled.div`
   left: 10px;
   bottom: 10px;
   color: white;
+`;
+
+export const StagePanel = styled.div`
+  position: relative;
+  border: solid 1px rgba(69, 60, 52, 0.5);
+  grid-column: span 1;
+  margin: 16;
+  display: grid;
+  border-radius: 8px;
+  user-select: none;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+  height: 100%;
 `;

@@ -1,8 +1,12 @@
 {
-  "name": "@repo/spine",
+  "name": "@repo/addition",
   "version": "1.0.0",
   "main": "src/index.ts",
   "types": "src/index.ts",
+  "scripts": {
+    "lint": "eslint . --max-warnings 0",
+    "generate:component": "turbo gen react-component"
+  },
   "devDependencies": {
     "@repo/eslint-config": "*",
     "@repo/typescript-config": "*",

@@ -2,8 +2,14 @@
 import * as React from "react";
 import * as PIXI from "pixi.js";
 import { loadAssets } from "@repo/assets";
-import { StageWrapper, StageInner, StageText, ZoomCase } from "./styles";
-import { ExtendedApp } from "./app";
+import {
+  StageWrapper,
+  StageInner,
+  StageText,
+  ZoomCase,
+  StagePanel,
+} from "./styles";
+import { AppContext, ExtendedApp } from "./app";
 import { addBrowserExtensionDebug } from "./debug";
 import { observer } from "mobx-react";
 
@@ -15,24 +21,27 @@ window.__PIXI_INSPECTOR_GLOBAL_HOOK__ &&
 export interface IStageDisplayable {}
 
 export interface IStageProps {
-  assetPromisesFactory?: () => Promise<void>[];
-  onLoad?: (app: ExtendedApp, stage: PIXI.Container) => Promise<void>;
-  rightAdd?: React.FC;
-  leftAdd?: React.FC;
+  assetPromisesFactory: () => Promise<void>[];
+  onLoad: (app: ExtendedApp, stage: PIXI.Container) => Promise<void>;
+  rightAdd?: React.ReactNode;
+  leftAdd?: React.ReactNode;
 }
 
 export const Stage: React.FC<IStageProps> = (props) => {
-  const canvasRef = React.useRef<HTMLCanvasElement>(null);
+  const [canvasRef, setCanvasRef] = React.useState<HTMLCanvasElement | null>(
+    null
+  );
   const [zoom, setZoom] = React.useState<number>(1);
   const [ready, setReady] = React.useState(false);
   const [app, setApp] = React.useState<ExtendedApp>();
+
   React.useEffect(() => {
-    if (!canvasRef.current) return;
+    if (!canvasRef) return;
 
     const _app = new ExtendedApp({
       backgroundColor: 0x140f24, // нужно - совпадает с фоном элемента
       resolution: 1, // нужно
-      view: canvasRef.current,
+      view: canvasRef,
       width: 400,
       height: 300,
       sharedTicker: true,
@@ -42,43 +51,38 @@ export const Stage: React.FC<IStageProps> = (props) => {
     setApp(_app);
 
     addBrowserExtensionDebug(_app);
-    if (
-      props.assetPromisesFactory !== undefined &&
-      props.onLoad !== undefined
-    ) {
-      loadAssets(props.assetPromisesFactory!()).then(() => {
-        _app.stage.interactive = true;
-        if (props.leftAdd) _app.stage.addChild();
-        //@ts-ignore
-        _app.view.addEventListener(
-          "wheel",
-          (e: WheelEvent) => {
-            e.preventDefault();
-            _app.zoom = _app.zoom - 0.1 * Math.sign(e.deltaY * -1);
-            setZoom(_app.zoom);
-          },
-          { passive: false }
-        );
+    console.log("suka", canvasRef);
+    loadAssets(props.assetPromisesFactory()).then(() => {
+      _app.stage.interactive = true;
+      //@ts-ignore
+      _app.view.addEventListener(
+        "wheel",
+        (e: WheelEvent) => {
+          e.preventDefault();
+          _app.zoom = _app.zoom - 0.1 * Math.sign(e.deltaY * -1);
+          setZoom(_app.zoom);
+        },
+        { passive: false }
+      );
 
-        props.onLoad!(_app, _app.stage).then(() => setReady(ready));
-      });
-    }
-  }, [canvasRef.current]);
+      props.onLoad(_app, _app.stage).then(() => setReady(true));
+    });
+  }, [canvasRef]);
   return (
     <StageWrapper>
-      <StageText>Spine</StageText>
-      <StageInner>
-        <ZoomCase>Scale: {Math.round(zoom * 10) / 10}</ZoomCase>
-        <canvas
-          ref={canvasRef}
-          style={{ opacity: ready ? "100%" : "0%" }}
-        ></canvas>
-      </StageInner>
-      {app && <Ddd app={app} />}
+      <AppContext.Provider value={app ? { app: app } : null}>
+        {props.leftAdd && <StagePanel>{props.leftAdd}</StagePanel>}
+        <StageInner>
+          <ZoomCase>Scale: {Math.round(zoom * 10) / 10}</ZoomCase>
+          <canvas
+            ref={(ref) => {
+              setCanvasRef(ref);
+            }}
+            style={{ opacity: ready ? "100%" : "0%" }}
+          ></canvas>
+        </StageInner>
+        {props.rightAdd && <StagePanel>{props.rightAdd}</StagePanel>}
+      </AppContext.Provider>
     </StageWrapper>
   );
 };
-
-const Ddd = observer((props: { app: ExtendedApp }) => {
-  return <div>{props.app.appStore.test}</div>;
-});
