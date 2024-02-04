@@ -10,7 +10,6 @@ interface ISpineKeys {
 }
 interface IAtlasKeys {
   atlas: string;
-  gamePath: string;
 }
 
 export interface IAssetsKeys {
@@ -28,7 +27,7 @@ export const loadAtlas = (
   atlasName: string,
   gamePath: string
 ): Promise<void> => {
-  Assets.add(atlasName, `/${HOST_PATH + gamePath}/${atlasName}.json`);
+  Assets.add(atlasName, `${HOST_PATH + gamePath}/${atlasName}.json`);
   return Assets.load(atlasName);
 };
 
@@ -86,8 +85,8 @@ export const generateAssetPromises = (
     );
   }
   if (assetsKeys.atlases.length) {
-    assetsKeys.atlases.forEach(({ atlas, gamePath }) => {
-      promisesAssets.push(loadAtlas(atlas, gamePath));
+    assetsKeys.atlases.forEach(({ atlas }) => {
+      promisesAssets.push(loadAtlas(atlas, assetsKeys.gamePath));
     });
   }
   return promisesAssets;
