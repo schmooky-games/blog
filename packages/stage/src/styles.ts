@@ -4,6 +4,7 @@ export const StageWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 16px;
+  width: 100%
 `;
 
 export const StageText = styled.p`
@@ -43,4 +44,12 @@ export const StagePanel = styled.div`
   user-select: none;
   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
   height: 100%;
+`;
+
+export const StageOuter = styled.div`
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
 `;

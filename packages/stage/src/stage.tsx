@@ -8,6 +8,7 @@ import {
   StageText,
   ZoomCase,
   StagePanel,
+  StageOuter,
 } from "./styles";
 import { AppContext, ExtendedApp } from "./app";
 import { addBrowserExtensionDebug } from "./debug";
@@ -69,6 +70,7 @@ export const Stage: React.FC<IStageProps> = (props) => {
     });
   }, [canvasRef]);
   return (
+    <StageOuter>
     <StageWrapper>
       <AppContext.Provider value={app ? { app: app } : null}>
         {props.leftAdd && <StagePanel>{props.leftAdd}</StagePanel>}
@@ -84,5 +86,6 @@ export const Stage: React.FC<IStageProps> = (props) => {
         {props.rightAdd && <StagePanel>{props.rightAdd}</StagePanel>}
       </AppContext.Provider>
     </StageWrapper>
+    </StageOuter>
   );
 };
