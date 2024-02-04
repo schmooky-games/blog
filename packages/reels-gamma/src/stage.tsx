@@ -13,6 +13,7 @@ import {
 import { AppContext, ExtendedApp } from "./app";
 import { addBrowserExtensionDebug } from "./debug";
 import { observer } from "mobx-react";
+import { ReelsBase } from "./reels";
 
 //@ts-ignore
 window.__PIXI_INSPECTOR_GLOBAL_HOOK__ &&
@@ -41,16 +42,18 @@ export const Stage: React.FC<IStageProps> = (props) => {
       backgroundColor: 0x140f24, // нужно - совпадает с фоном элемента
       resolution: 1, // нужно
       view: canvasRef,
-      width: 400,
-      height: 300,
+      width: 800,
+      height: 600,
       sharedTicker: true,
-      zoom: 1,
+      zoom: 2,
     });
 
     setApp(_app);
 
     addBrowserExtensionDebug(_app);
-    loadAssets(props.assetPromisesFactory()).then(() => {
+    const assetPromises = loadAssets(props.assetPromisesFactory())
+    console.log(assetPromises)
+    Promise.allSettled(assetPromises).then(() => {
       console.log('Assets Loaded', PIXI.Assets.cache)
       _app.stage.interactive = true;
       //@ts-ignore
@@ -63,6 +66,13 @@ export const Stage: React.FC<IStageProps> = (props) => {
         },
         { passive: false }
       );
+
+      const reels =  new ReelsBase();
+      _app.stage.addChild(reels)
+
+      const [rw,rh] = reels.outerBounds
+      _app.stage.x -= rw/4;
+      _app.stage.y -= rh/4;
 
       props.onLoad(_app, _app.stage).then(() => setReady(true));
     });

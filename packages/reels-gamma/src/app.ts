@@ -33,6 +33,9 @@ export class ExtendedApp extends PIXI.Application {
   get zoom(): number {
     return 1 / this.stage.scale.x;
   }
+
+  reels: ReelsBase<number>;
+
   /**
    * Создает экземпляр ExtendedApp.
    *
@@ -42,6 +45,7 @@ export class ExtendedApp extends PIXI.Application {
     super(options);
     this.stage.x = this.renderer.view.width / 2;
     this.stage.y = this.renderer.view.height / 2;
+    this.reels = new ReelsBase();
   }
 }
 export const AppContext = React.createContext<{ app: ExtendedApp } | null>(

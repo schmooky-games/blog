@@ -3,8 +3,8 @@ import { generateAssetPromises } from "@repo/assets";
 
 export const prototypeKeyLoaders: IAssetsKeys = {
   fonts: [],
-  gamePath: "thunderkick/prototype",
-  prefix: "thunderkick-prototype-",
+  gamePath: "prototype",
+  prefix: "prototype-",
   bitMapFonts: [],
   spines: [],
   atlases: [{ atlas: "prototype" }],

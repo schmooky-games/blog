@@ -27,9 +27,9 @@ export const loadAtlas = (
   atlasName: string,
   gamePath: string
 ): Promise<void> => {
-  Assets.add({alias:atlasName,src: `${HOST_PATH + gamePath}/${atlasName}.json`});
+  // Assets.add({alias:atlasName,src: [,`${HOST_PATH + gamePath}/${atlasName}.webp`],});
   console.log(atlasName)
-  return Assets.load(atlasName);
+  return Assets.load(`${HOST_PATH + gamePath}/${atlasName}.json`);
 };
 
 export const loadSpineAsset = async (
@@ -98,7 +98,7 @@ export const generateAssetPromises = (
 export const loadAssets = (
   assetPromises: Array<Promise<unknown>>,
   updateProgress?: (progress: number) => void
-): Promise<unknown[]> => {
+): Promise<unknown>[] => {
   if (updateProgress) {
     let loadedAssetsCount = 0;
     const allAssetsCount = assetPromises.length;
@@ -109,7 +109,7 @@ export const loadAssets = (
       });
     });
   }
-  return Promise.all(assetPromises);
+  return assetPromises;
 };
 
 export interface IAssetsKeys {

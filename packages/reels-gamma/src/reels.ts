@@ -4,7 +4,7 @@ import { Assets, Container, DisplayObject, Graphics, Sprite } from "pixi.js";
 const prototypeStaticSymbolFactory = (id: number) => {
   switch (id) {
     case 1:
-      return new Sprite(Assets.cache.get("square/square_1.png"));
+      return new Sprite(Assets.cache.get("square/square_1"));
     default:
       throw new Error("Invalid Symbol ID");
   }
@@ -19,7 +19,14 @@ export class ReelsBase<T extends number> extends Container {
 
   protected debugBoundsGraphics = new Graphics();
 
-  protected symbolFactory: (id: T) => DisplayObject =
+  get outerBounds(): [number, number] {
+    return [
+      this.symbolWidth * this.baseColumnCount,
+      this.symbolHeight * this.baseRowCount,
+    ];
+  }
+
+  readonly symbolFactory: (id: T) => DisplayObject =
     prototypeStaticSymbolFactory;
 
   constructor(symbolFactory?: (id: T) => DisplayObject) {
@@ -31,10 +38,6 @@ export class ReelsBase<T extends number> extends Container {
     if (symbolFactory) {
       this.symbolFactory = symbolFactory;
     }
-    console.log(Assets.cache.get("square/square_1"))
-    const a = this.symbolFactory(1 as T);
-    console.log(a)
-    // this.addChild();
   }
 
   drawRectangularBounds() {
