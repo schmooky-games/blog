@@ -1,31 +1,52 @@
-import { makeAutoObservable, observable } from "mobx";
+import { makeAutoObservable } from "mobx";
 import { IAnimation, Spine } from "@repo/spine";
+import { AnimationState, Skeleton, Skin } from "@pixi-spine/all-4.1";
 
 export class AppStore {
   animationStore: AnimationStore;
-  assetsStore: AssetsStore;
+  skinstore: SkinStore;
   test = "test";
   constructor() {
     makeAutoObservable(this);
     this.animationStore = new AnimationStore(this);
-    this.assetsStore = new AssetsStore();
+    this.skinstore = new SkinStore(this);
   }
 }
 
 class AnimationStore {
   appStore: AppStore;
-  spineObj: Spine | undefined;
+  state: AnimationState | undefined;
+  animationNames: Array<string> | undefined;
   currentAnimation: IAnimation | undefined;
   constructor(appStore: AppStore) {
     makeAutoObservable(this, { appStore: false });
     this.appStore = appStore;
   }
   setSpineObj(spine: Spine) {
-    this.spineObj = spine;
+    this.animationNames = spine.animationNames;
+    this.state = spine.state;
   }
-  setCurrentAnimation(crntAnim: IAnimation) {
+  setCurrentAnimation(crntAnim: IAnimation | undefined) {
     this.currentAnimation = crntAnim;
   }
 }
 
-class AssetsStore {}
+class SkinStore {
+  appStore: AppStore;
+  state: AnimationState | undefined;
+  skins: Array<Skin> | undefined;
+  skeleton: Skeleton | undefined;
+  currentSkin: Skin | undefined;
+  constructor(appStore: AppStore) {
+    makeAutoObservable(this, { appStore: false });
+    this.appStore = appStore;
+  }
+  setSpineObj(spine: Spine) {
+    this.state = spine.state;
+    this.skins = spine.spineData.skins;
+    this.skeleton = spine.skeleton;
+  }
+  setCurrentSkin(crntAnim: Skin | undefined) {
+    this.currentSkin = crntAnim;
+  }
+}

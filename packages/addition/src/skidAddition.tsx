@@ -3,21 +3,21 @@ import { Case, CaseWrapper } from "./styles";
 import { observer } from "mobx-react";
 import { AppContext } from "@repo/stage/src/app";
 
-export const AnimAddition: React.FC = observer(() => {
+export const SkinAddition: React.FC = observer(() => {
   const { app } = useContext(AppContext) ?? {};
   app &&
-    app.appStore.animationStore.state?.addListener({
+    app.appStore.skinstore.state?.addListener({
       start(entry) {
         console.log("Anim started");
         //@ts-ignore
-        app.appStore.animationStore.setCurrentAnimation(entry.animation);
+        app.appStore.skin.setCurrentSkin(entry.animation);
       },
       interrupt(entry) {},
       end(entry) {},
       dispose(entry) {},
       complete(entry) {
         console.log("Anim Ended");
-        app.appStore.animationStore.setCurrentAnimation(undefined);
+        app.appStore.skinstore.setCurrentSkin(undefined);
       },
       event(entry, event) {},
     });
@@ -25,18 +25,14 @@ export const AnimAddition: React.FC = observer(() => {
   return (
     app && (
       <CaseWrapper>
-        {app.appStore.animationStore.animationNames &&
-          app.appStore.animationStore.animationNames.map((foo, i) => (
+        {app.appStore.skinstore.skins &&
+          app.appStore.skinstore.skins.map((foo, i) => (
             <Case
-              curent={
-                app.appStore.animationStore.currentAnimation?.name === foo
-              }
-              onClick={() =>
-                app.appStore.animationStore.state?.setAnimation(0, foo, false)
-              }
+              curent={app.appStore.skinstore.currentSkin == foo}
+              onClick={() => app.appStore.skinstore.skeleton?.setSkin(foo)}
               key={i}
             >
-              {foo}
+              {foo.name}
             </Case>
           ))}
       </CaseWrapper>

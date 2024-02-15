@@ -7,13 +7,13 @@ export const CaseWrapper = styled.div`
   overflow-y: scroll;
 `;
 
-export const Case = styled.button<{ animPlayed?: boolean }>`
+export const Case = styled.button<{ curent?: boolean }>`
   color: #d9d9d9;
-  background-color: ${(props) => (props.animPlayed ? "red" : "#433f50")};
+  background-color: ${(props) => (props.curent ? "red" : "#433f50")};
   transition: color 1s;
   margin: 5px;
   margin-bottom: 0px;
   :hover {
-    background-color: ${(props) => (props.animPlayed ? "red" : "#87848f")};
+    background-color: ${(props) => (props.curent ? "red" : "#87848f")};
   }
 `;
