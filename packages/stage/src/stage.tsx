@@ -52,15 +52,16 @@ export const Stage: React.FC<IStageProps> = (props) => {
     setApp(_app);
 
     addBrowserExtensionDebug(_app);
-    console.log("suka", canvasRef);
-    loadAssets(props.assetPromisesFactory()).then(() => {
+
+    const assetPromises = loadAssets(props.assetPromisesFactory());
+    Promise.allSettled(assetPromises).then(() => {
       _app.stage.interactive = true;
       //@ts-ignore
       _app.view.addEventListener(
         "wheel",
         (e: WheelEvent) => {
           e.preventDefault();
-          _app.zoom = _app.zoom - 0.1 * Math.sign(e.deltaY * -1);
+          _app.zoom = _app.zoom + 0.1 * Math.sign(e.deltaY);
           setZoom(_app.zoom);
         },
         { passive: false }
@@ -71,21 +72,21 @@ export const Stage: React.FC<IStageProps> = (props) => {
   }, [canvasRef]);
   return (
     <StageOuter>
-    <StageWrapper>
-      <AppContext.Provider value={app ? { app: app } : null}>
-        {props.leftAdd && <StagePanel>{props.leftAdd}</StagePanel>}
-        <StageInner>
-          <ZoomCase>Scale: {Math.round(zoom * 10) / 10}</ZoomCase>
-          <canvas
-            ref={(ref) => {
-              setCanvasRef(ref);
-            }}
-            style={{ opacity: ready ? "100%" : "0%" }}
-          ></canvas>
-        </StageInner>
-        {props.rightAdd && <StagePanel>{props.rightAdd}</StagePanel>}
-      </AppContext.Provider>
-    </StageWrapper>
+      <StageWrapper>
+        <AppContext.Provider value={app ? { app: app } : null}>
+          {props.leftAdd && <StagePanel>{props.leftAdd}</StagePanel>}
+          <StageInner>
+            <ZoomCase>Scale: {Math.round((-zoom + 2) * 10) / 10}</ZoomCase>
+            <canvas
+              ref={(ref) => {
+                setCanvasRef(ref);
+              }}
+              style={{ opacity: ready ? "100%" : "0%" }}
+            ></canvas>
+          </StageInner>
+          {props.rightAdd && <StagePanel>{props.rightAdd}</StagePanel>}
+        </AppContext.Provider>
+      </StageWrapper>
     </StageOuter>
   );
 };

@@ -16,12 +16,12 @@ export interface IExtendedAppOptions extends PIXI.IApplicationOptions {
 export class ExtendedApp extends PIXI.Application {
   /**
    * Установить значение масштаба (зума) сцены.
-   * Входное значение ограничивается в диапазоне от 0.1 до 10.
+   * Входное значение ограничивается в диапазоне от 0.1 до 2.
    *
    * @param {number} value - Значение масштаба.
    */
   set zoom(value: number) {
-    this.stage.scale.set(1 / Math.min(10, Math.max(0.1, +value.toFixed(2))));
+    this.stage.scale.set(1 / Math.min(2, Math.max(0.01, +value.toFixed(2))));
   }
 
   /**

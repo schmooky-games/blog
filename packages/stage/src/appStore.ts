@@ -33,7 +33,6 @@ class AnimationStore {
 
 class SkinStore {
   appStore: AppStore;
-  state: AnimationState | undefined;
   skins: Array<Skin> | undefined;
   skeleton: Skeleton | undefined;
   currentSkin: Skin | undefined;
@@ -42,7 +41,6 @@ class SkinStore {
     this.appStore = appStore;
   }
   setSpineObj(spine: Spine) {
-    this.state = spine.state;
     this.skins = spine.spineData.skins;
     this.skeleton = spine.skeleton;
   }

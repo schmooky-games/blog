@@ -51,10 +51,10 @@ export const Stage: React.FC<IStageProps> = (props) => {
     setApp(_app);
 
     addBrowserExtensionDebug(_app);
-    const assetPromises = loadAssets(props.assetPromisesFactory())
-    console.log(assetPromises)
+    const assetPromises = loadAssets(props.assetPromisesFactory());
+    console.log(assetPromises);
     Promise.allSettled(assetPromises).then(() => {
-      console.log('Assets Loaded', PIXI.Assets.cache)
+      console.log("Assets Loaded", PIXI.Assets.cache);
       _app.stage.interactive = true;
       //@ts-ignore
       _app.view.addEventListener(
@@ -67,23 +67,22 @@ export const Stage: React.FC<IStageProps> = (props) => {
         { passive: false }
       );
 
-      const reels =  new ReelsBase();
-      _app.stage.addChild(reels)
+      const reels = new ReelsBase();
+      _app.stage.addChild(reels);
 
-      const [rw,rh] = reels.outerBounds
-      _app.stage.x -= rw/4;
-      _app.stage.y -= rh/4;
+      const [rw, rh] = reels.outerBounds;
+      _app.stage.x -= rw / 4;
+      _app.stage.y -= rh / 4;
 
       props.onLoad(_app, _app.stage).then(() => setReady(true));
     });
   }, [canvasRef]);
   return (
-          <canvas
-            ref={(ref) => {
-              setCanvasRef(ref);
-            }}
-            style={{ opacity: ready ? "100%" : "0%" }}
-          ></canvas>
-
+    <canvas
+      ref={(ref) => {
+        setCanvasRef(ref);
+      }}
+      style={{ opacity: ready ? "100%" : "0%" }}
+    ></canvas>
   );
 };

@@ -3,8 +3,8 @@ import styled from "@emotion/styled";
 export const StageWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-gap: 16px;
-  width: 100%
+  grid-gap: 8px;
+  width: 100%;
 `;
 
 export const StageText = styled.p`

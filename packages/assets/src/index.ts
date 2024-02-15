@@ -28,7 +28,7 @@ export const loadAtlas = (
   gamePath: string
 ): Promise<void> => {
   // Assets.add({alias:atlasName,src: [,`${HOST_PATH + gamePath}/${atlasName}.webp`],});
-  console.log(atlasName)
+  console.log(atlasName);
   return Assets.load(`${HOST_PATH + gamePath}/${atlasName}.json`);
 };
 
@@ -85,10 +85,10 @@ export const generateAssetPromises = (
       }
     );
   }
-  console.log('Loading Atlasses')
+  console.log("Loading Atlasses");
   if (assetsKeys.atlases.length) {
     assetsKeys.atlases.forEach(({ atlas }) => {
-      console.log(`Atlas: ${atlas}`)
+      console.log(`Atlas: ${atlas}`);
       promisesAssets.push(loadAtlas(atlas, assetsKeys.gamePath));
     });
   }

@@ -21,7 +21,6 @@ export const AnimAddition: React.FC = observer(() => {
       },
       event(entry, event) {},
     });
-  console.log("🥼", app);
   return (
     app && (
       <CaseWrapper>

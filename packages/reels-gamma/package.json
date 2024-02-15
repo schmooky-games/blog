@@ -38,7 +38,6 @@
     "@pixi/react": "^7.1.1",
     "@repo/assets": "*",
     "@repo/spine": "*",
-    "@repo/store": "*",
     "@repo/addition": "*",
     "@repo/thunderkick": "*",
     "mobx": "^6.12.0",
