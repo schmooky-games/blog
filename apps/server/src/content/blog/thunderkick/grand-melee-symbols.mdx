@@ -1,0 +1,85 @@
+---
+title: 'Grand Melee - Symbols'
+description: ''
+pubDate: 'Feb 20 2024'
+heroImage: '/blog-thunderkick-grand-melee.jpg'
+---
+
+# Grand Melee Slot
+
+Grand Melee is a slot by Thunderkick released in August of 2023.
+
+## Symbols
+
+In Grand Melee symbols are 224x248
+
+Symbols share base animations that let them be universally controlled by code
+- `disable`
+- `disableFade`
+- `enable`
+- `idle`
+- `initialWin`
+- `land`
+- `winToggle`
+- `winToggleFast`
+
+
+**НУЖНО СДЕЛАТЬ ФИЛЬТР ДЛЯ АНИМАЦИЙ ЧТОБЫ НЕ ПОКАЗЫВАТЬ ВСЕ**
+
+Grand Melee's key feature is **Sticky Reel**,  all symbols share animations to be used in that feature's logic
+- `idleStickyReel`
+- `landPreSticky`
+- `stickyIdle`
+- `stickyOff`
+- `sickyOn`
+- `activateStickyReel`
+- `spinStart`
+
+**НУЖНО СДЕЛАТЬ ФИЛЬТР ДЛЯ АНИМАЦИЙ ЧТОБЫ НЕ ПОКАЗЫВАТЬ ВСЕ**
+
+Game Has following symbols: lows, highs and specials.
+
+
+How thunderkick works with Symbols
+
+
+### Lows
+
+Low symbols are made with single skeleton which based on skin provides different static symbol as attachment to `back` spine slot.
+
+**НУЖНО СДЕЛАТЬ КНОПКИ ВЫБОРА СКИНА**
+
+import GrandMeleeLowsStage from "./grand-melee/lows.astro";
+
+<GrandMeleeLowsStage />
+
+### Highs
+
+How effects and symbols are merged
+
+<GrandMeleeLowsStage />
+
+
+### Specials
+
+How effects and symbols are merged
+
+<GrandMeleeLowsStage />
+
+### Effects
+
+### Timings
+
+Grand Melee symbols use following timings:
+- Landing - 500ms or 15 frames
+- Disable and Enable - 10 frames
+- Initial Win - 30 frames
+- Win Toggle - 40 frames
+- Spin Start - 15 frames
+- Sticky Reel Activation - 35 frames
+
+
+## More Links
+
+- [Grand Melee on Thunderkick website](https://www.thunderkick.com/games/grand-melee/)
+- [Grand Melee Promo Video](https://youtu.be/KahNny1-AHE?list=TLGGnaS7Wbp87KkzMTAxMjAyNA)

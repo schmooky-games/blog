@@ -1,5 +1,5 @@
 ---
-title: 'Grand Melee - Thunderkick'
+title: 'Grand Melee - Stage'
 description: ''
 pubDate: 'Feb 20 2024'
 heroImage: '/blog-thunderkick-grand-melee.jpg'
@@ -14,14 +14,17 @@ Here is how you import and use a UI component inside of MDX.
 When you open this page in the browser, you should see the clickable button below.
 
 RTP: 96,17
-
 Reels: 6
-
 Connecting pay ways: 1193
-
 Volatility: High
-
 Max Exposure: 5000X
+
+## Features
+
+Grand Melee's features are:
+- **Sticky Reel**
+- **Expanding Symbol**
+- **Symbol Upgrade**
 
 
 ## Animations
@@ -30,14 +33,18 @@ Max Exposure: 5000X
 
 In Grand Melee symbols are 224x248
 
-Symbols share animations that let them be universally controlled by code
+Symbols share base animations that let them be universally controlled by code
 - `disable`
 - `disableFade`
 - `enable`
 - `idle`
-- `idleStickyReel`
 - `initialWin`
 - `land`
+- `winToggle`
+- `winToggleFast`
+
+Grand Melee's key feature is **Sticky Reel**,  all symbols share animations to be used in that feature's logic
+- `idleStickyReel`
 - `landPreSticky`
 - `stickyIdle`
 - `stickyOff`
@@ -45,13 +52,8 @@ Symbols share animations that let them be universally controlled by code
 - `activateStickyReel`
 - `spinStart`
 
-- `winToggle`
-- `winToggleFast`
+Game Has following symbols: lows, highs and specials.
 
-Game Has following symbols:
-- lows
-- highs
-- specials
 
 How thunderkick works with Symbols
 
@@ -69,23 +71,36 @@ import GrandMeleeLowsStage from "./grand-melee/lows.astro";
 
 How effects and symbols are merged
 
+<GrandMeleeLowsStage />
+
 
 #### Specials
 
 How effects and symbols are merged
+
+<GrandMeleeLowsStage />
 
 
 ### Splash
 
 How splash animation works
 
+
+<GrandMeleeLowsStage />
+
 ### Stage
 
 How stage animation works
 
+
+<GrandMeleeLowsStage />
+
 ## Reels
 
 How Thunderkick reels works
+
+
+<GrandMeleeLowsStage />
 
 ### Timings
 
