@@ -35,7 +35,6 @@ class SkinStore {
   appStore: AppStore;
   skins: Array<Skin> | undefined;
   skeleton: Skeleton | undefined;
-  currentSkin: Skin | undefined;
   constructor(appStore: AppStore) {
     makeAutoObservable(this, { appStore: false });
     this.appStore = appStore;
@@ -43,8 +42,5 @@ class SkinStore {
   setSpineObj(spine: Spine) {
     this.skins = spine.spineData.skins;
     this.skeleton = spine.skeleton;
-  }
-  setCurrentSkin(crntAnim: Skin | undefined) {
-    this.currentSkin = crntAnim;
   }
 }

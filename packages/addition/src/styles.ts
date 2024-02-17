@@ -17,3 +17,8 @@ export const Case = styled.button<{ curent?: boolean }>`
     background-color: ${(props) => (props.curent ? "red" : "#87848f")};
   }
 `;
+export const SkinSelect = styled.select`
+  color: #d9d9d9;
+  background-color: #433f50;
+  max-height: fit-content;
+`;
