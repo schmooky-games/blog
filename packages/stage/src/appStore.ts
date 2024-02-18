@@ -39,7 +39,7 @@ class SkinStore {
     makeAutoObservable(this, { appStore: false });
     this.appStore = appStore;
   }
-  setSpineObj(spine: Spine) {
+  setData(spine: Spine) {
     this.skins = spine.spineData.skins;
     this.skeleton = spine.skeleton;
   }

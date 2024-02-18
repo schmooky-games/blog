@@ -24,13 +24,13 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
   args: {
     rightAdd: <AnimAddition />,
-    leftAdd: <SkinAddition />,
+    leftAdd: <SkinAddition showSkin={[]} />,
     assetPromisesFactory: grandMeleeFactory,
     onLoad: async (app, stage) => {
       const spine = new Spine("thunderkick-grand-melee-lows");
       stage.addChild(spine);
       app.appStore.animationStore.setSpineObj(spine);
-      app.appStore.skinstore.setSpineObj(spine);
+      app.appStore.skinstore.setData(spine);
     },
   },
 };
