@@ -5,7 +5,7 @@ import { AppContext } from "@repo/stage/src/app";
 import { Skin } from "@pixi-spine/all-4.1";
 
 export interface ISkinAddition {
-  showSkin: boolean | Array<string> | ((name: string) => boolean);
+  showSkin?: boolean | Array<string> | ((name: string) => boolean);
 }
 
 export const SkinAddition: React.FC<ISkinAddition> = observer((props) => {
@@ -14,31 +14,26 @@ export const SkinAddition: React.FC<ISkinAddition> = observer((props) => {
   const changeHandler: ChangeEventHandler<HTMLSelectElement> = (event) => {
     setSkinName(event.target.value);
   };
-  const skinsToShow: Skin[] | undefined = (() => {
-    if (typeof props.showSkin === "boolean") {
-      console.log(props.showSkin);
-      return app?.appStore.skinstore.skins;
-    } else if (Array.isArray(props.showSkin)) {
-      return app?.appStore.skinstore.skins?.filter((skin) =>
-        console.log(props.showSkin)
-      );
-    }
-    return new Array<Skin>();
-  })();
   if (skinName) {
     app?.appStore.skinstore.skeleton?.setSkinByName(skinName);
   }
   return (
-    app &&
-    skinsToShow && (
+    app && (
       <SkinSelect onChange={changeHandler} value={skinName}>
-        <option value={""}>-- Chose skin --</option>
+        {!skinName && <option value={""}>-- Chose skin --</option>}
         {app.appStore.skinstore.skins &&
-          skinsToShow.slice(1).map((foo, i) => (
-            <option value={foo.name} key={i}>
-              {foo.name}
-            </option>
-          ))}
+          ((Array.isArray(props.showSkin) &&
+            props.showSkin.map((foo, i) => (
+              <option value={foo} key={i}>
+                {foo}
+              </option>
+            ))) ||
+            (props.showSkin &&
+              app.appStore.skinstore.skins.slice(1).map((foo, i) => (
+                <option value={foo.name} key={i}>
+                  {foo.name}
+                </option>
+              ))))}
       </SkinSelect>
     )
   );

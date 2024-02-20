@@ -24,7 +24,7 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
   args: {
     rightAdd: <AnimAddition />,
-    leftAdd: <SkinAddition showSkin={[]} />,
+    leftAdd: <SkinAddition showSkin={["low1","low3"]} />,
     assetPromisesFactory: grandMeleeFactory,
     onLoad: async (app, stage) => {
       const spine = new Spine("thunderkick-grand-melee-lows");
